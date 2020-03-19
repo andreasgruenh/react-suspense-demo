@@ -1,0 +1,32 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: rgb(18, 35, 49);
+  color: white;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana,
+    sans-serif;
+}
+
+input {
+  border: 0;
+  border-bottom: 1px solid turquoise;
+  background: transparent;
+  color: white;
+  padding: 0.2rem 0.5rem;
+}
+input:focus {
+  outline: none;
+  border-bottom: 1px solid chartreuse;
+}
+
+a {
+  color: turquoise;
+  text-decoration: none;
+  transition: color 0.4s;
+}
+
+a:hover {
+  color: chartreuse;
+}
