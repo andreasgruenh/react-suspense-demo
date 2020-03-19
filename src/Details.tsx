@@ -1,74 +1,71 @@
-import React, { useEffect, useState } from "react";
-import { Link, useRouteMatch } from "react-router-dom";
-import {
-  getPokemonDetails,
-  PokemonDetails
-} from "./data/details";
+import React from "react";
+import { getPokemonDetails } from "./data/details";
+import { useResource } from "./data/resource";
+import { Image } from "./Image";
 
-export function Details() {
-  const name = useRouteMatch<{ name: string }>().params
-    .name;
+export function Details(props: {
+  name: string;
+  setSelectedName: (name: string | undefined) => void;
+}) {
+  const name = props.name;
 
-  const [
-    details,
-    setDetails
-  ] = useState<PokemonDetails | null>(null);
+  const detailsResource = useResource(name, name =>
+    getPokemonDetails(name)
+  );
 
-  useEffect(() => {
-    getPokemonDetails(name).then(setDetails);
-  }, [name]);
+  const details = detailsResource.data;
 
   return (
     <>
       <small style={{ fontWeight: "normal" }}>
-        <Link to="/">Back</Link>
+        <a onClick={() => props.setSelectedName(undefined)}>
+          Back
+        </a>
       </small>
       <h1>Poke Details {name}</h1>
-      {!details ? (
-        "Loading"
-      ) : (
-        <div>
-          <table>
-            <tbody>
-              <tr>
-                <td colSpan={2}>
-                  <img
-                    src={details.sprites.front_default}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>Name</td>
-                <td>{details.name}</td>
-              </tr>
-              <tr>
-                <td>Types</td>
-                <td>
-                  <ul>
-                    {details.types.map((type, index) => (
-                      <li key={index}>{type.type.name}</li>
-                    ))}
-                  </ul>
-                </td>
-              </tr>
-              <tr>
-                <td>Abilities</td>
-                <td>
-                  <ul>
-                    {details.abilities.map(
-                      (ability, index) => (
-                        <li key={index}>
-                          {ability.ability.name}
-                        </li>
-                      )
-                    )}
-                  </ul>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      )}
+
+      <div>
+        <table>
+          <tbody>
+            <tr>
+              <td colSpan={2}>
+                <Image
+                  src={details.sprites.front_default}
+                  alt={`Image of ${details.name}`}
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>Name</td>
+              <td>{details.name}</td>
+            </tr>
+            <tr>
+              <td>Types</td>
+              <td>
+                <ul>
+                  {details.types.map((type, index) => (
+                    <li key={index}>{type.type.name}</li>
+                  ))}
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td>Abilities</td>
+              <td>
+                <ul>
+                  {details.abilities.map(
+                    (ability, index) => (
+                      <li key={index}>
+                        {ability.ability.name}
+                      </li>
+                    )
+                  )}
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </>
   );
 }

@@ -1,7 +1,4 @@
-import { sleep } from "./sleep";
-
 export async function getPokemonDetails(name: string) {
-  await sleep(Math.random() * 500 + 500);
   const resp = await fetch(
     `https://pokeapi.co/api/v2/pokemon/${name}`
   );
