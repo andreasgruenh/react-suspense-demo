@@ -2,11 +2,13 @@ import React from "react";
 import { getFavoritePokemon } from "./data/favorites";
 import { useResource } from "./data/resource";
 import { theme } from "./theme";
+import { useDelayedValue } from "./useDelayedValue";
 
 export function List(props: {
   name: string | undefined;
   setSelectedName: (name: string | undefined) => void;
 }) {
+  const delayedName = useDelayedValue(props.name, 250);
   const favoritesResource = useResource("favorites", () =>
     getFavoritePokemon()
   );
@@ -30,7 +32,7 @@ export function List(props: {
                 }}
               >
                 {poke}{" "}
-                {poke === props.name ? "Loading" : null}
+                {poke === delayedName ? "Loading" : null}
               </a>
             </li>
           ))}

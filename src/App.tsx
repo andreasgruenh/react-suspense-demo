@@ -3,10 +3,6 @@ import React, {
   useState,
   useTransition
 } from "react";
-import {
-  unstable_scheduleCallback,
-  unstable_UserBlockingPriority
-} from "scheduler";
 import { Details } from "./Details";
 import { List } from "./List";
 
@@ -27,14 +23,7 @@ export function App() {
       <List
         name={nameToFetch}
         setSelectedName={name => {
-          setTimeout(() => {
-            unstable_scheduleCallback(
-              unstable_UserBlockingPriority,
-              () => {
-                setNameToFetch(name);
-              }
-            );
-          }, 250);
+          setNameToFetch(name);
 
           startTransition(() => {
             setFetchedName(name);
